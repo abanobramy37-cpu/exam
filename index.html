@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light dark;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}</style>
+<title>امتحان تاريخ الوحدة الأولى</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<style>
+/* Layout: one question per screen, sticky progress bar, single centered column that stays readable on a phone */
+:root{
+  --bg:#EEF2F4; --surface:#FFFFFF; --fg:#13222C; --muted:#51636F; --line:#D3DCE2;
+  --accent:#0B6477; --accent-fg:#FFFFFF; --accent-soft:#DCEEF2;
+  --gold:#8A5E0E;
+  --ok:#17714A; --ok-bg:#DFF3E8; --bad:#A8332B; --bad-bg:#FBE4E1;
+  --font-d:'Amiri','Traditional Arabic',serif;
+  --font-b:'IBM Plex Sans Arabic','Segoe UI',Tahoma,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0C151B; --surface:#14212A; --fg:#E6EEF2; --muted:#9BB0BC; --line:#2A3C47;
+    --accent:#4FB8CC; --accent-fg:#06222A; --accent-soft:#17323B; --gold:#E3B15A;
+    --ok:#5ED19B; --ok-bg:#12352A; --bad:#FF8F85; --bad-bg:#3A1A18; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0C151B; --surface:#14212A; --fg:#E6EEF2; --muted:#9BB0BC; --line:#2A3C47;
+  --accent:#4FB8CC; --accent-fg:#06222A; --accent-soft:#17323B; --gold:#E3B15A;
+  --ok:#5ED19B; --ok-bg:#12352A; --bad:#FF8F85; --bad-bg:#3A1A18; color-scheme:dark;
+}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-b);font-size:16px;line-height:1.7}
+*{box-sizing:border-box}
+button,select,input{font:inherit;color:inherit}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:680px;margin-inline:auto;padding-inline:16px;padding-block:16px 48px}
+h1,h2{font-family:var(--font-d);text-wrap:balance;margin:0;line-height:1.4}
+.num{font-variant-numeric:tabular-nums}
+
+/* start */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+.start h1{font-size:2rem;margin-bottom:6px}
+.start .sub{color:var(--muted);margin:0 0 18px}
+.parts{list-style:none;margin:0 0 18px;padding:0;display:grid;gap:8px}
+.parts li{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;background:var(--bg);border-radius:8px;font-size:.95rem}
+.parts b{font-weight:600}
+label.f{display:block;font-weight:600;margin-bottom:6px}
+input[type=text]{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);margin-bottom:16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:10px 22px;border:0;border-radius:10px;background:var(--accent);color:var(--accent-fg);font-weight:600;cursor:pointer}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+.btn.block{width:100%}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px 8px;margin-bottom:12px}
+.bar-row{display:flex;justify-content:space-between;gap:12px;font-size:.9rem;color:var(--muted)}
+.bar-row b{color:var(--fg)}
+.track{height:6px;background:var(--line);border-radius:3px;margin-top:8px;overflow:hidden}
+.fill{height:100%;background:var(--accent);width:0;transition:width .3s}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}}
+
+/* question */
+.sec-tag{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;font-size:.85rem;color:var(--muted)}
+.chip{padding:2px 10px;border-radius:99px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.q{font-size:1.15rem;font-weight:500;margin:0 0 6px}
+.hint{font-size:.88rem;color:var(--muted);margin:0 0 14px}
+.opts{display:grid;gap:10px;margin-top:14px}
+.opt{display:flex;gap:10px;align-items:flex-start;text-align:start;width:100%;min-height:52px;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt .mk{flex:none;width:1.5em;font-weight:700}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.opt.ok{border-color:var(--ok);background:var(--ok-bg)}
+.opt.bad{border-color:var(--bad);background:var(--bad-bg)}
+.opt.miss{border-style:dashed;border-color:var(--ok)}
+.opt:disabled{cursor:default;color:var(--fg)}
+.mrow{display:grid;gap:8px;padding:12px;border:1.5px solid var(--line);border-radius:10px;margin-top:10px}
+.mrow select{width:100%;min-height:46px;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;background:var(--surface)}
+.mrow.ok{border-color:var(--ok);background:var(--ok-bg)}
+.mrow.bad{border-color:var(--bad);background:var(--bad-bg)}
+.mfb{font-size:.9rem;font-weight:600}
+.fb{margin-top:16px;padding:14px;border-radius:10px;border:1.5px solid var(--line)}
+.fb.ok{background:var(--ok-bg);border-color:var(--ok)}
+.fb.bad{background:var(--bad-bg);border-color:var(--bad)}
+.fb strong{display:block;margin-bottom:4px}
+.fb.ok strong{color:var(--ok)} .fb.bad strong{color:var(--bad)}
+.fb p{margin:0}
+.next{margin-top:16px}
+
+/* result */
+.result{text-align:center}
+.score-big{font-family:var(--font-d);font-size:4rem;line-height:1.1;color:var(--gold);margin:6px 0}
+.score-big small{font-size:1.6rem;color:var(--muted)}
+.grade{font-size:1.2rem;font-weight:600;margin-bottom:4px}
+.pct{color:var(--muted)}
+.break{margin-top:20px;display:grid;gap:8px;text-align:start}
+.break div{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;background:var(--bg);border-radius:8px;font-size:.95rem}
+.review{margin-top:24px;text-align:start}
+.review h2{font-size:1.4rem;margin-bottom:10px}
+.ritem{padding:14px;border:1px solid var(--line);border-radius:10px;margin-bottom:10px;background:var(--surface)}
+.ritem .rt{font-weight:600;margin-bottom:6px}
+.ritem .ra{color:var(--ok);font-weight:600;margin-bottom:4px}
+.ritem .re{color:var(--muted);font-size:.92rem}
+.pts{font-size:.85rem;color:var(--gold);font-weight:600}
+</style>
+
+</head>
+<body>
+<div id="app" class="wrap" dir="rtl" lang="ar"></div>
+
+<script>
+/* ===================== المحتوى ===================== */
+var SECTIONS = [
+  {title:"الجزء الأول", sub:"اختر الإجابة الصحيحة", pts:1},
+  {title:"الجزء الثاني", sub:"أكمل", pts:1},
+  {title:"الجزء الثالث", sub:"صح أم خطأ", pts:1},
+  {title:"الجزء الرابع", sub:"علّل / فسّر", pts:2},
+  {title:"الجزء الخامس", sub:"ما النتائج المترتبة على", pts:2},
+  {title:"الجزء السادس", sub:"قارن ووصّل", pts:1}
+];
+var LESSONS = ["الدرس الأول: بناء الدولة المصرية","الدرس الثاني: الدولة المصرية القديمة ومقاومة الاحتلال","الدرس الثالث: التحولات الكبرى (العصر الوسيط)","الدرس الرابع: التحولات الكبرى (العصر الحديث)"];
+var Q = [];
+/* في الاختيار والإكمال: الإجابة الصحيحة دائمًا أول عنصر في القائمة، ويتم خلط الترتيب عند العرض */
+function mcq(sec,lesson,text,opts,exp){Q.push({type:"mcq",sec:sec,lesson:lesson,text:text,opts:opts,exp:exp,pts:SECTIONS[sec].pts});}
+function tf(lesson,text,ans,exp){Q.push({type:"tf",sec:2,lesson:lesson,text:text,ans:ans,exp:exp,pts:1});}
+function multi(sec,lesson,text,right,wrong,exp){Q.push({type:"multi",sec:sec,lesson:lesson,text:text,right:right,wrong:wrong,exp:exp,pts:2});}
+function match(sec,lesson,text,choices,items,exp){Q.push({type:"match",sec:sec,lesson:lesson,text:text,choices:choices,items:items,exp:exp,pts:items.length});}
+
+/* ---------- الجزء الأول: اختيار من متعدد (30) ---------- */
+// الدرس الأول
+mcq(0,0,"الركن الذي يُعد الأكثر تأثيرًا في بناء الدولة المصرية واستمرارها هو:",["الشعب","الحيز الجغرافي","السلطة","السيادة"],"الشعب هو المصدر الحقيقي للسيادة والسلطة، والمحرك الرئيسي لعجلة التنمية والإنتاج، وحارس الهوية الوطنية.");
+mcq(0,0,"المساحة البحرية التي تمتد عادة لمسافة 12 ميلًا بحريًا من خط الأساس للساحل تُسمى:",["المياه الإقليمية","الباسس (الأرض)","المجال الجوي","الحيز الجغرافي"],"المياه الإقليمية هي المساحات البحرية التي تمتد 12 ميلًا بحريًا من خط الأساس للساحل.");
+mcq(0,0,"تقع الحدود البرية الجنوبية بين مصر والسودان عند:",["دائرة عرض 22° شمالًا","خط طول 25° شرقًا","دائرة عرض 25° شمالًا","خط طول 22° شرقًا"],"الحدود الجنوبية عند دائرة عرض 22° شمالًا، وتم رسمها عام 1899م.");
+mcq(0,0,"تم رسم الحدود البرية الغربية بين مصر وليبيا عند خط طول 25° شرقًا عام:",["1925م","1899م","1906م","1840م"],"رُسمت الحدود الغربية عام 1925م، أما الشرقية مع فلسطين فعام 1906م والجنوبية عام 1899م.");
+mcq(0,0,"المادة الدستورية التي تنص على أن رئيس الجمهورية هو رئيس الدولة ورئيس السلطة التنفيذية:",["المادة (139)","المادة (101)","المادة (163)","المادة (184)"],"المادة 139 لرئيس الجمهورية، والمادة 101 لمجلس النواب، والمادة 163 للحكومة، والمادة 184 للسلطة القضائية.");
+mcq(0,0,"المادة (184) من الدستور تنظم عمل:",["السلطة القضائية","السلطة التشريعية","رئيس الجمهورية","الحكومة (مجلس الوزراء)"],"المادة 184: السلطة القضائية مستقلة تتولاها المحاكم على اختلاف أنواعها ودرجاتها وتصدر أحكامها وفقًا للقانون.");
+mcq(0,0,"وصف مصر بأنها «دولة برزخ» يعني أنها:",["حلقة وصل ومعبر بين بحرين وقارتين وملتقى ثلاث قارات","دولة قامت حضارتها على نهر النيل","دولة محاطة بحدود طبيعية تعزلها","دولة تنفرد بلغة واحدة"],"مصر حلقة وصل ومعبر بين البحرين الأحمر والمتوسط وبين قارتي آسيا وإفريقيا وملتقى ثلاث قارات.");
+mcq(0,0,"أبرز مثال تاريخي يوضح أن الشعب هو القوة المحركة للتغيير وفرض إرادته الوطنية:",["ثورة 1919م بقيادة سعد زغلول","الحملة الفرنسية 1798م","افتتاح قناة السويس 1869م","معاهدة بلطة ليمان 1838م"],"في ثورة 1919م شاركت فئات المجتمع كلها حول هدف واحد هو الاستقلال ورفض الاحتلال البريطاني.");
+// الدرس الثاني
+mcq(0,1,"اتخذ الهكسوس عاصمة سياسية وعسكرية لهم في شرق الدلتا هي مدينة:",["أواريس","طيبة","منف","أبيدوس"],"اتخذوا أواريس عاصمة سياسية وعسكرية لبسط نفوذهم على شمال البلاد، أما طيبة فكانت مركز المقاومة.");
+mcq(0,1,"قاد المرحلة الأولى من حرب التحرير ضد الهكسوس (من التحدي إلى المواجهة) الملك:",["سقنن رع","كامس","أحمس الأول","مينا"],"بدأ سقنن رع بتوسيع نفوذه حتى أبيدوس ثم دفع الهكسوس شمالًا، وانتهت المرحلة باستشهاده.");
+mcq(0,1,"اعتمد الملك كامس على قطع الإمدادات القادمة للهكسوس من مملكة:",["كوش","اليونان","فارس","مقدونيا"],"قطع طرق الإمدادات من مملكة كوش جنوبًا هدف إلى عزل الهكسوس واستنزاف قدراتهم الاقتصادية.");
+mcq(0,1,"اتجه الملك كامس شمالًا بعد انتصاره في مصر الوسطى بهدف:",["تضييق الخناق على الهكسوس ونقل المعركة إلى مناطق نفوذهم","الاحتماء بالمدن الجنوبية","الاتفاق مع الهكسوس على تقسيم مصر","إعلان استقلال طيبة"],"تقويض القوة الاقتصادية للخصم هي أول خطوات تحقيق النصر، ولذلك نقل كامس المعركة إلى مناطق نفوذهم ومنعهم من إعادة التمركز.");
+mcq(0,1,"الملك الذي طارد الهكسوس خارج مصر وقضى عليهم نهائيًا هو:",["أحمس الأول","كامس","سقنن رع","مينا"],"استكمل أحمس مسيرة أخيه كامس ووالده سقنن رع فحاصرهم في منف وأواريس وطاردهم خارج الحدود.");
+mcq(0,1,"التقى الجيشان المصري والفارسي في شرق الدلتا عام 525 ق.م، وكان قائد الفرس:",["قمبيز الثاني","الإسكندر الأكبر","أكتافيوس","دقلديانوس"],"أسفرت المعركة عن دخول الفرس مصر وإخضاعها وتأسيس الأسرة السابعة والعشرين.");
+mcq(0,1,"من إجراءات الإسكندر الأكبر لتثبيت نفوذه في مصر بعد دخولها عام 332 ق.م:",["الحصول على اعتراف ديني بادعائه أنه ابن الإله آمون","هدم المعابد المصرية","فرض ضرائب باهظة على المصريين","منع العادات والتقاليد المصرية"],"احترم الإسكندر عادات المصريين وتقاليدهم، وأسس الإسكندرية مركزًا تجاريًا وثقافيًا وعسكريًا.");
+mcq(0,1,"بلغ اضطهاد الرومان للمصريين المسيحيين ذروته في عهد الإمبراطور دقلديانوس حتى سُمّي عصره:",["عصر الشهداء","عصر التسامح الديني","عصر الأسرات","عصر الولاة"],"انتهى الاضطهاد بعد اعتراف الإمبراطور قسطنطين بالمسيحية وإعلانه سياسة التسامح الديني.");
+// الدرس الثالث
+mcq(0,2,"يبدأ العصر الوسيط في مصر بالفتح الإسلامي عام 641م وينتهي بدخول العثمانيين مصر عام:",["1517م","1250م","1171م","1914م"],"دخل العثمانيون مصر عام 1517م بعد هزيمة المماليك، وأطلقوا على مصر «درة التاج العثماني».");
+mcq(0,2,"الدولة المستقلة تمامًا عن الخلافة العباسية التي اتخذت من القاهرة مركزًا للخلافة:",["الدولة الفاطمية","الدولة الطولونية","الدولة الإخشيدية","الدولة الأيوبية"],"الطولونية والإخشيدية والأيوبية والمملوكية كانت مستقلة اسميًا مع التبعية للخلافة، أما الفاطمية فكانت مستقلة تمامًا.");
+mcq(0,2,"العامل الأبرز لظهور الدول المستقلة في مصر في العصر العباسي الثاني:",["ضعف السلطة المركزية في بغداد وبُعد مصر عنها","قوة الخلافة العباسية وتماسكها","الصراع بين مصر والهكسوس","الاحتلال الفارسي لمصر"],"ضعف خلفاء العصر العباسي الثاني وبُعد مصر عن مركز الخلافة هيأ لظهور الدول المستقلة.");
+mcq(0,2,"أسس مدينة الفسطاط لتكون مركزًا للحكم والإدارة:",["عمرو بن العاص","أحمد بن طولون","أحمس الأول","محمد علي"],"الفسطاط أسسها عمرو بن العاص، والقطائع أسسها أحمد بن طولون، والقاهرة أسسها الفاطميون.");
+mcq(0,2,"من الصناعات التقليدية التي اعتمدت على زراعة قصب السكر في مصر الإسلامية:",["صناعة السكر","صناعة النسيج","صناعة الزجاج","صناعة الفخار"],"النسيج اعتمد على الكتان، والسكر على قصب السكر، والزجاج على إنتاج الأواني والزخارف الزجاجية.");
+mcq(0,2,"من أشهر المؤرخين الذين برزوا في مصر خلال العصر الوسيط:",["المقريزي وابن إياس","رفاعة الطهطاوي وقاسم أمين","جمال الدين الأفغاني ومحمد عبده","أحمد لطفي السيد وعائشة التيمورية"],"من أبرز المؤرخين المقريزي وابن إياس، وقد دونوا تاريخ المجتمع المصري وحللوا أحداثه.");
+mcq(0,2,"تصدت مصر في العصرين الأيوبي والمملوكي لخطرين كبيرين هما:",["الحملات الصليبية والزحف المغولي","الغزو الفارسي والروماني","الحملة الفرنسية والاحتلال البريطاني","الهكسوس والبطالمة"],"نجحت مصر في مواجهة الصليبيين والمغول (ومنها معركة عين جالوت) فأدت دورًا محوريًا في الدفاع عن العالم الإسلامي.");
+// الدرس الرابع
+mcq(0,3,"استمرت الحملة الفرنسية على مصر في الفترة:",["1798م – 1801م","1805م – 1848م","1838م – 1840م","1869م – 1882م"],"كشفت الحملة للمصريين الفجوة الحضارية بينهم وبين أوروبا، فاعتُبرت نقطة تحول في تاريخ مصر الحديث.");
+mcq(0,3,"وصل محمد علي إلى حكم مصر عام 1805م بدعم من:",["العلماء والقوى الشعبية","الحملة الفرنسية","الإنجليز","المماليك وحدهم"],"في ظل الصراع بين المماليك والعثمانيين تمكن محمد علي من الحكم بدعم العلماء والقوى الشعبية.");
+mcq(0,3,"نصت معاهدة بلطة ليمان (1838م) بين الدولة العثمانية وبريطانيا على:",["إلغاء نظام الاحتكار وفتح الأسواق المصرية أمام المنتجات الأوروبية","زيادة الحماية الجمركية للصناعة الوطنية","تقسيم مصر بين الدولتين","منح مصر استقلالًا كاملًا"],"المعاهدة منحت التجار البريطانيين امتيازات واسعة وأدت إلى تراجع الصناعة المحلية في مصر.");
+mcq(0,3,"حصل إسماعيل عام 1867م على لقب «خديو» بعد أن أصدر السلطان العثماني فرمانًا بتعديل نظام:",["وراثة الحكم","الضرائب","التجنيد","الاحتكار"],"الفرمان جعل الحكم في أكبر أبناء الحاكم، ومنح مصر قدرًا أكبر من الاستقلال الإداري والسياسي.");
+mcq(0,3,"التيار الفكري الذي ظهر كرد فعل مباشر على الاحتلال البريطاني:",["تيار الحركة الوطنية المصرية","تيار الإصلاح الديني","التيار الليبرالي","تيار النهضة الأوروبية"],"أبرز رموزه مصطفى كامل ومحمد فريد، وشعاراته تحقيق الاستقلال الوطني وإنهاء الاحتلال الأجنبي.");
+mcq(0,3,"تشمل الطبقة الرابعة (الطبقة الدنيا) في المجتمع المصري أواخر القرن التاسع عشر:",["الفلاحين والعمال الموسميين","الحرفيين وصغار التجار","كبار التجار وأصحاب المصانع","الحاكم ورجال الحاشية"],"الفلاحون والعمال الموسميون شكلوا أغلب المجتمع، وهم قاعدة الهرم الطبقي.");
+mcq(0,3,"احتلت بريطانيا مصر عام 1882م بحجة حماية مصالح الدائنين و:",["تأمين طرق التجارة عبر قناة السويس","إنهاء الحكم العثماني","دعم الصناعة الوطنية","تحرير مصر من الديون"],"اتخذت بريطانيا الديون ذريعة للتدخل، وكانت قناة السويس الطريق إلى الهند هدفها الاستراتيجي.");
+
+/* ---------- الجزء الثاني: أكمل (10) ---------- */
+mcq(1,0,"المجال الجوي هو المساحة ........ التي تعلو اليابس والمياه الإقليمية وتمارس الدولة سيادتها عليها.",["الرأسية","الأفقية","الساحلية","الحدودية"],"المجال الجوي مساحة رأسية تعلو الباسس والمياه الإقليمية.");
+mcq(1,0,"تقع حدود مصر الشمالية على ساحل البحر ........ ، والشرقية على ساحل البحر الأحمر وخليج العقبة.",["المتوسط","الأسود","العربي","الأحمر"],"خط ساحل البحر المتوسط هو الحد الشمالي لمصر.");
+mcq(1,0,"يتولى مجلس ........ سلطة التشريع وإقرار السياسة العامة للدولة وفق المادة (101).",["النواب","الوزراء","القضاء","الشيوخ"],"السلطة التشريعية يمثلها مجلس النواب (المادة 101).");
+mcq(1,1,"وحّد القطرين (الشمال والجنوب) الملك ........ (نعرمر)، وهو الأساس الحقيقي لظهور الدولة المصرية.",["مينا","أحمس","كامس","سقنن رع"],"قيام حكومة مركزية قوية بعد توحيد القطرين على يد الملك مينا.");
+mcq(1,1,"تأسست الأسرة ........ والعشرون في مصر بعد الغزو الفارسي عام 525 ق.م.",["السابعة","الأولى","الثانية عشرة","الثامنة عشرة"],"أسفرت معركة 525 ق.م عن دخول الفرس مصر وتأسيس الأسرة السابعة والعشرين.");
+mcq(1,1,"تمكن الرومان من السيطرة على مصر بعد معركة ........ البحرية.",["أكتيوم","نزيب","عين جالوت","الدلتا"],"أدت المعركة إلى هزيمة الملكة كليوباترا السابعة وسيطرة أكتافيوس على مصر.");
+mcq(1,2,"أصبحت القاهرة مقرًا للخلافة وتحولت إلى مركز رئيسي لصنع القرار السياسي والديني في عهد الدولة ........",["الفاطمية","الطولونية","الإخشيدية","الأموية"],"الفاطميون أسسوا القاهرة لتكون مقرًا للخلافة الفاطمية.");
+mcq(1,2,"أطلق العثمانيون على مصر بعد ضمها عام 1517م لقب «درة التاج ........»",["العثماني","الأيوبي","المملوكي","الفاطمي"],"أدركوا أهمية مصر ومكانتها الاقتصادية والاستراتيجية.");
+mcq(1,3,"ظهر تيار الإصلاح الديني بقيادة جمال الدين ........ وتلميذه محمد عبده.",["الأفغاني","الطهطاوي","السيد","كامل"],"جمال الدين الأفغاني ومحمد عبده من قادة تيار الإصلاح الديني.");
+mcq(1,3,"تعني ........ أن الجميع متساوون في الحقوق والواجبات.",["المواطنة","الاحتكار","السيادة","الاحتلال"],"المواطنة: المساواة في الحقوق والواجبات بين جميع أفراد الشعب.");
+
+/* ---------- الجزء الثالث: صح أم خطأ (10) ---------- */
+tf(0,"السيادة على الشئون الخارجية تشمل حرية الدولة في إبرام المعاهدات وإقامة العلاقات الدبلوماسية.",true,"السيادة الخارجية تشمل استقلال الدولة في علاقاتها الدولية وحرية إبرام المعاهدات وحماية المصالح الوطنية والتمثيل في المنظمات الدولية.");
+tf(0,"رُسمت الحدود البرية الشرقية بين مصر وفلسطين عام 1925م.",false,"الصحيح: رُسمت الحدود الشرقية عام 1906م، أما عام 1925م فهو رسم الحدود الغربية مع ليبيا.");
+tf(0,"يقتصر دور الشعب في بناء الدولة على الوجود العددي فقط.",false,"الصحيح: دور الشعب يمتد إلى المشاركة الفعالة في بناء الدولة وتنميتها وحمايتها، سياسيًا واقتصاديًا ودفاعيًا.");
+tf(1,"كان ضعف الدولة المصرية هو السبب الوحيد لنجاح الهكسوس في السيطرة على مصر.",false,"الصحيح: ساعد على نجاحهم أيضًا تفوقهم العسكري وامتلاكهم العجلات الحربية التي لم تكن متوافرة لدى المصريين.");
+tf(1,"يمكن اعتبار الملك كامس مهندس النصر على الهكسوس رغم أنه لم يشهد المعركة الفاصلة.",true,"خطته المحكمة وتنظيمه للجيش وقطع الإمدادات مهّدت الطريق أمام أحمس لتحقيق النصر.");
+tf(1,"استقبل المصريون الإسكندر الأكبر بالمقاومة عند دخوله مصر عام 332 ق.م.",false,"الصحيح: دخل مصر دون مقاومة تُذكر، فقد وجد فيه المصريون فرصة للتخلص من الحكم الفارسي.");
+tf(1,"بلغ الاضطهاد الروماني للمصريين المسيحيين ذروته في عهد الإمبراطور قسطنطين.",false,"الصحيح: ذروته في عهد دقلديانوس (عصر الشهداء)، أما قسطنطين فاعترف بالمسيحية وأعلن التسامح الديني.");
+tf(2,"أسست القطائع على يد أحمد بن طولون مؤسس أول دولة مستقلة بمصر.",true,"القطائع أُسست لتكون مقرًا للحكم والإدارة خلال العصر العباسي الثاني.");
+tf(3,"نصت معاهدة بلطة ليمان عام 1838م على إلغاء نظام الاحتكار وفتح الأسواق المصرية أمام المنتجات الأوروبية.",true,"وكان ذلك من أسباب تراجع الصناعة المصرية لعجزها عن منافسة البضائع الأوروبية.");
+tf(3,"افتُتحت قناة السويس عام 1869م في عهد الخديو إسماعيل.",true,"وتزامن ذلك مع تزايد النفوذ الأوروبي في مصر وزيادة الديون الخارجية.");
+
+/* ---------- الجزء الرابع: علّل / فسّر (اختر كل الأسباب الصحيحة) ---------- */
+multi(3,0,"علّل: يُعد الشعب أهم أركان الدولة المصرية.",
+ ["هو المصدر الحقيقي للسيادة والسلطة","هو المحرك الرئيسي لعجلة التنمية والإنتاج","هو حارس الهوية الوطنية والثقافية الممتدة عبر التاريخ"],
+ ["لأنه الركن الوحيد الذي لا يحتاج إلى حيز جغرافي","لأنه يحل محل السلطة في سن القوانين وتنفيذها","لأن الدولة تستمر بدونه ما دامت السلطة قائمة"],
+ "الشعب ركن أساسي، وبالتالي لا وجود لدولة دون شعب. وهو الدرع الأول لحماية أمن واستقرار الوطن.");
+multi(3,1,"فسّر: اتخاذ الهكسوس إقليم الدلتا ومدينة أواريس موضعًا لتمركزهم في مصر.",
+ ["لأن الدلتا تمثل النبض الاقتصادي لمصر بوفرة محاصيلها وثرواتها","لأنها أقرب مناطق مصر اتصالًا بطرق التجارة القادمة من آسيا","لاتخاذ أواريس عاصمة سياسية وعسكرية لبسط نفوذهم على شمال البلاد"],
+ ["لأنها أبعد مناطق مصر عن طرق التجارة","لأن طيبة كانت تحت سيطرتهم الكاملة منذ البداية","لأن الدلتا صحراء قليلة الموارد"],
+ "سيطرتهم على الدلتا مكنتهم من التحكم في جزء كبير من الموارد الاقتصادية للبلاد.");
+multi(3,2,"بمَ تفسر: تحول مصر من ولاية تابعة إلى قوة إقليمية فاعلة في العالم الإسلامي خلال العصر الوسيط؟",
+ ["ظهور الدول المستقلة (الطولونية والإخشيدية وغيرها)","اتخاذ القاهرة مقرًا للخلافة الفاطمية","مواجهة الحملات الصليبية والخطر المغولي في العصرين الأيوبي والمملوكي"],
+ ["إلغاء الخلافة الإسلامية وانتقال القرار إلى بغداد","انعزال مصر عن العالم الإسلامي","فقد القاهرة أهميتها السياسية"],
+ "هذه التحولات جعلت مصر مركزًا قياديًا مؤثرًا في العالم الإسلامي.");
+multi(3,2,"علّل: فضّل المسلمون إنشاء عاصمة جديدة (الفسطاط) بدلًا من مدينة الإسكندرية.",
+ ["عدم وجود مانع مائي يعيق وصول الإمدادات والتواصل مع مركز الخلافة","تعرض الإسكندرية للهجمات البحرية المفاجئة من الأسطول البيزنطي","موقع الفسطاط المتوسط عند رأس الدلتا يضمن السيطرة على الوجهين البحري والقبلي"],
+ ["لأن الإسكندرية بعيدة عن البحر المتوسط","لأن الإسكندرية بلا أهمية تاريخية","لقربها من الحدود الغربية"],
+ "تم ذلك بأمر الخليفة عمر بن الخطاب لأسباب جغرافية وأمنية.");
+multi(3,3,"فسّر: تراجع الصناعة المصرية والتصنيع المبكر في القرن التاسع عشر.",
+ ["معاهدة بلطة ليمان 1838م ألغت نظام الاحتكار","فتح الأسواق المصرية أمام المنتجات الأوروبية","التخلي عن سياسة حماية الصناعة الوطنية التي أرساها محمد علي"],
+ ["إهمال محمد علي للصناعة منذ توليه الحكم","انعدام المواد الخام في مصر","تدخل فرنسا لحماية الصناعة المصرية"],
+ "لم يكن التراجع نتاج عامل واحد، بل تفاعل بين ضغوط خارجية وسياسات اقتصادية داخلية.");
+
+/* ---------- الجزء الخامس: ما النتائج (اختر كل النتائج الصحيحة) ---------- */
+multi(4,1,"ما النتائج المترتبة على ضعف السلطة المركزية في نهاية عصر الدولة الوسطى؟",
+ ["عجز مصر عن حماية حدودها الشمالية الشرقية (بوابة مصر نحو آسيا)","تسلل الهكسوس تدريجيًا إلى دلتا النيل","انتشار الفوضى والاضطرابات في البلاد"],
+ ["توسع مصر وبناء أول إمبراطورية","استمرار قوة الجيش في حماية الحدود","طرد الهكسوس من البلاد"],
+ "ضعف السلطة المركزية أدى إلى تسلل الهكسوس عبر الحدود الشمالية الشرقية.");
+multi(4,1,"ما النتائج المترتبة على معركة أكتيوم البحرية؟",
+ ["هزيمة الملكة كليوباترا السابعة","سيطرة أكتافيوس (الإمبراطور الروماني) على مصر","تحول مصر إلى واحدة من أهم الولايات الرومانية تميزًا"],
+ ["انتصار كليوباترا واستقلال مصر","انسحاب الرومان من مصر","قيام دولة البطالمة"],
+ "تمكن الرومان من السيطرة على مصر بعد هذه المعركة.");
+multi(4,2,"ما النتائج المترتبة على انتشار اللغة العربية في المجتمع المصري بعد الفتح الإسلامي؟",
+ ["ربط مصر بالعالم الإسلامي","المساهمة في تشكيل الهوية الثقافية للمجتمع المصري","إبراز دور مصر بصورة أعمق في المجال الحضاري والثقافي للدولة الإسلامية"],
+ ["تراجع دور مصر الثقافي في العالم الإسلامي","عزل مصر عن العالم الإسلامي","منع المصريين من المشاركة في الإدارة"],
+ "اللغة العربية أصبحت لغة الإدارة والمعاملات الرسمية ثم لغة العلم والثقافة.");
+multi(4,3,"ما النتائج المترتبة على تصاعد الديون الخارجية في عهد الخديو إسماعيل (نتيجة مشروعات التحديث وزيادة الإنفاق الحكومي)؟",
+ ["إنشاء صندوق الدين","فرض المراقبة الثنائية الأوروبية","تشكيل وزارة مختلطة تضم وزراء مصريين وأجانب"],
+ ["زيادة استقلال مصر المالي","إلغاء النفوذ الأوروبي في مصر","توقف مشروعات التحديث تمامًا بقرار عثماني"],
+ "فقدت مصر جزءًا كبيرًا من استقلالها المالي والسياسي، وهو ما اتخذته بريطانيا ذريعة لاحتلال مصر عام 1882م.");
+multi(4,1,"ما النتائج المترتبة على تطوير المصريين القدماء للعجلات الحربية؟",
+ ["تعزيز قوة الجيش المصري","رفع قدرة الجيش على حماية حدود الدولة","تحقيق الانتصارات العسكرية"],
+ ["ضعف الجيش المصري","اعتماد مصر على قوة الهكسوس","فقدان الخبرات العسكرية المصرية"],
+ "التطوير عكس قدرة المصريين على توظيف المعارف الوافدة بما يخدم احتياجاتهم ويعزز قوة دولتهم.");
+
+/* ---------- الجزء السادس: قارن ووصّل ---------- */
+match(5,3,"صنّف كل عبارة إلى التيار الفكري الذي يعبّر عنها:",
+ ["تيار الإصلاح الديني","التيار الليبرالي","تيار الحركة الوطنية"],
+ [["تحرير الفكر الديني من الخرافات والجمود وإعمال العقل والاجتهاد",0],
+  ["قاده جمال الدين الأفغاني وتلميذه محمد عبده",0],
+  ["الدستور والحياة النيابية على النمط الأوروبي والحريات الفردية",1],
+  ["من أبرز رموزه أحمد لطفي السيد ورفاعة الطهطاوي",1],
+  ["ظهر كرد فعل مباشر على الاحتلال البريطاني",2]],
+ "تيار الحركة الوطنية: مصطفى كامل ومحمد فريد، وشعاره الاستقلال الوطني وإنهاء الاحتلال.");
+match(5,1,"اختر القائد المصري المناسب لكل دور في مقاومة الهكسوس:",
+ ["سقنن رع","كامس","أحمس الأول","الملكة إياح حتب","الملك مينا"],
+ [["بدأ توسيع نفوذه حتى أبيدوس ودفع الهكسوس شمالًا",0],
+  ["أعاد تنظيم الجيش بروح هجومية وقطع الإمدادات القادمة من كوش",1],
+  ["حاصر الهكسوس في منف وأواريس وطاردهم خارج حدود مصر",2],
+  ["دعمت الجيش وأمّنت الجبهة الداخلية بعد استشهاد زوجها وابنها",3],
+  ["وحّد القطرين وأسس الدولة المصرية القوية",4]],
+ "الملكة إياح حتب مثلت نموذجًا للقيادة الوطنية في أوقات الأزمات.");
+
+/* ===================== المحرك ===================== */
+var app = document.getElementById("app");
+var total = Q.reduce(function(s,q){return s+q.pts;},0);
+var st = {i:0, name:"", earned:0, log:[], done:false};
+
+function ar(n){var r=Math.round(n*100)/100;return r.toLocaleString("ar-EG",{maximumFractionDigits:2});}
+function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=b[i];b[i]=b[j];b[j]=t;}return b;}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+function startScreen(){
+  var rows = SECTIONS.map(function(s,idx){
+    var n=Q.filter(function(q){return q.sec===idx;}).length;
+    var p=Q.filter(function(q){return q.sec===idx;}).reduce(function(a,q){return a+q.pts;},0);
+    return '<li><span><b>'+s.title+'</b> — '+s.sub+'</span><span class="num">'+ar(n)+' سؤال · '+ar(p)+' درجة</span></li>';
+  }).join("");
+  app.innerHTML =
+   '<section class="card start">'+
+   '<h1>امتحان تاريخ الوحدة الأولى</h1>'+
+   '<p class="sub">الصف الثاني الثانوي — الترم الأول — الدروس من الأول إلى الرابع</p>'+
+   '<ul class="parts">'+rows+'<li><span><b>المجموع</b></span><span class="num"><b>'+ar(Q.length)+' سؤال · '+ar(total)+' درجة</b></span></li></ul>'+
+   '<label class="f" for="nm">اسم الطالب</label>'+
+   '<input type="text" id="nm" autocomplete="name" placeholder="اكتب اسمك هنا">'+
+   '<p class="hint">يظهر تصحيح كل سؤال بعد إجابتك مباشرة، وتظهر الدرجة النهائية في آخر الامتحان. لا يمكن تغيير الإجابة بعد تأكيدها.</p>'+
+   '<button class="btn block" id="go">ابدأ الامتحان</button>'+
+   '</section>';
+  document.getElementById("go").onclick=function(){
+    st={i:0,name:(document.getElementById("nm").value||"").trim(),earned:0,log:[],done:false};
+    showQ();window.scrollTo(0,0);
+  };
+}
+
+function header(){
+  var pct=(st.i/Q.length)*100;
+  return '<div class="bar"><div class="bar-row"><span>السؤال <b class="num">'+ar(st.i+1)+'</b> من <span class="num">'+ar(Q.length)+'</span></span>'+
+   '<span>درجتك حتى الآن: <b class="num">'+ar(st.earned)+'</b></span></div>'+
+   '<div class="track" role="progressbar" aria-valuemin="0" aria-valuemax="'+Q.length+'" aria-valuenow="'+st.i+'"><div class="fill" style="width:'+pct+'%"></div></div></div>';
+}
+
+function tag(q){
+  return '<div class="sec-tag"><span class="chip">'+SECTIONS[q.sec].title+'</span><span>'+SECTIONS[q.sec].sub+'</span><span>·</span><span>'+LESSONS[q.lesson].split(":")[0]+'</span><span class="pts num">('+ar(q.pts)+' '+(q.pts<=2&&q.pts>=1&&q.type!=="match"?(q.pts===1?'درجة':'درجتان'):'درجات')+')</span></div>';
+}
+
+function finish(q,earned,html){
+  st.earned+=earned;
+  st.log.push({q:q,earned:earned});
+  var full=earned>=q.pts-1e-9, part=!full&&earned>0;
+  var cls=full?"ok":"bad";
+  var head=full?"إجابة صحيحة ✓":(part?"إجابة جزئية — حصلت على "+ar(earned)+" من "+ar(q.pts):"إجابة خاطئة ✗");
+  var fb=document.getElementById("fb");
+  fb.className="fb "+cls;
+  fb.innerHTML='<strong>'+head+'</strong>'+(html||"")+'<p>'+esc(q.exp)+'</p>';
+  fb.hidden=false;
+  var nx=document.getElementById("nx");
+  nx.hidden=false;
+  nx.textContent=(st.i===Q.length-1)?"عرض النتيجة النهائية":"السؤال التالي";
+  nx.onclick=function(){st.i++;if(st.i>=Q.length){showResult();}else{showQ();}window.scrollTo(0,0);};
+  var bp=document.querySelector(".bar-row b.num:last-of-type");
+  var bars=document.querySelectorAll(".bar-row b.num");
+  if(bars[1]) bars[1].textContent=ar(st.earned);
+  nx.focus({preventScroll:false});
+}
+
+function showQ(){
+  var q=Q[st.i];
+  var body='';
+  if(q.type==="mcq"){
+    var order=shuffle(q.opts.map(function(_,k){return k;}));
+    body='<div class="opts" role="group" aria-label="الاختيارات">'+order.map(function(k){return '<button class="opt" data-k="'+k+'"><span class="mk"></span><span>'+esc(q.opts[k])+'</span></button>';}).join("")+'</div>';
+  } else if(q.type==="tf"){
+    body='<div class="opts" role="group">'+[[true,"صح"],[false,"خطأ"]].map(function(p){return '<button class="opt" data-k="'+p[0]+'"><span class="mk"></span><span>'+p[1]+'</span></button>';}).join("")+'</div>';
+  } else if(q.type==="multi"){
+    var all=shuffle(q.right.map(function(t){return {t:t,c:true};}).concat(q.wrong.map(function(t){return {t:t,c:false};})));
+    q._all=all;
+    body='<p class="hint">اختر كل الإجابات الصحيحة (أكثر من إجابة)، ثم اضغط «تأكيد الإجابة». كل اختيار خاطئ يخصم من درجتك.</p><div class="opts">'+all.map(function(o,k){return '<button class="opt" aria-pressed="false" data-k="'+k+'"><span class="mk">☐</span><span>'+esc(o.t)+'</span></button>';}).join("")+'</div><div class="next"><button class="btn block" id="cf" disabled>تأكيد الإجابة</button></div>';
+  } else if(q.type==="match"){
+    body='<div>'+q.items.map(function(it,k){
+      return '<div class="mrow" id="r'+k+'"><div>'+esc(it[0])+'</div><select id="s'+k+'" aria-label="الاختيار للعبارة '+ar(k+1)+'"><option value="">— اختر —</option>'+q.choices.map(function(c,j){return '<option value="'+j+'">'+esc(c)+'</option>';}).join("")+'</select><div class="mfb" id="f'+k+'"></div></div>';
+    }).join("")+'</div><div class="next"><button class="btn block" id="cf" disabled>تأكيد الإجابة</button></div>';
+  }
+  app.innerHTML=header()+
+   '<section class="card">'+tag(q)+'<h2 class="q">'+esc(q.text)+'</h2>'+body+
+   '<div class="fb" id="fb" hidden aria-live="polite"></div>'+
+   '<div class="next"><button class="btn block" id="nx" hidden></button></div></section>';
+
+  if(q.type==="mcq"||q.type==="tf"){
+    var btns=app.querySelectorAll(".opt");
+    btns.forEach(function(b){b.onclick=function(){
+      var k=b.getAttribute("data-k");
+      var ok=(q.type==="mcq")?(k==="0"):((k==="true")===q.ans);
+      btns.forEach(function(x){
+        x.disabled=true;
+        var xk=x.getAttribute("data-k");
+        var xr=(q.type==="mcq")?(xk==="0"):((xk==="true")===q.ans);
+        if(xr){x.classList.add("ok");x.querySelector(".mk").textContent="✓";}
+        else if(x===b){x.classList.add("bad");x.querySelector(".mk").textContent="✗";}
+      });
+      finish(q,ok?q.pts:0,ok?"":(q.type==="mcq"?'<p>الإجابة الصحيحة: <b>'+esc(q.opts[0])+'</b></p>':'<p>الإجابة الصحيحة: <b>'+(q.ans?"صح":"خطأ")+'</b></p>'));
+    };});
+  }
+  if(q.type==="multi"){
+    var ob=app.querySelectorAll(".opt"), cf=document.getElementById("cf");
+    ob.forEach(function(b){b.onclick=function(){
+      var on=b.getAttribute("aria-pressed")==="true";
+      b.setAttribute("aria-pressed",on?"false":"true");
+      b.querySelector(".mk").textContent=on?"☐":"☑";
+      cf.disabled=!app.querySelector('.opt[aria-pressed="true"]');
+    };});
+    cf.onclick=function(){
+      var r=0,w=0;
+      ob.forEach(function(b){
+        var o=q._all[+b.getAttribute("data-k")], sel=b.getAttribute("aria-pressed")==="true";
+        b.disabled=true;
+        if(o.c&&sel){r++;b.classList.add("ok");b.querySelector(".mk").textContent="✓";}
+        else if(o.c&&!sel){b.classList.add("miss");b.querySelector(".mk").textContent="✓";}
+        else if(!o.c&&sel){w++;b.classList.add("bad");b.querySelector(".mk").textContent="✗";}
+      });
+      cf.hidden=true;
+      var earned=Math.max(0,(r-w)/q.right.length)*q.pts;
+      finish(q,earned,'<p>أصبت في <b class="num">'+ar(r)+'</b> من <span class="num">'+ar(q.right.length)+'</span> إجابات صحيحة، واخترت <b class="num">'+ar(w)+'</b> اختيارًا خاطئًا. الإجابات الصحيحة مؤشر عليها بعلامة ✓ (والمتروكة بحدود متقطعة).</p>');
+    };
+  }
+  if(q.type==="match"){
+    var cf2=document.getElementById("cf");
+    var sels=q.items.map(function(_,k){return document.getElementById("s"+k);});
+    sels.forEach(function(s){s.onchange=function(){cf2.disabled=sels.some(function(x){return x.value==="";});};});
+    cf2.onclick=function(){
+      var good=0;
+      q.items.forEach(function(it,k){
+        var v=+sels[k].value, ok=(v===it[1]);
+        sels[k].disabled=true;
+        if(ok)good++;
+        var row=document.getElementById("r"+k);
+        row.classList.add(ok?"ok":"bad");
+        document.getElementById("f"+k).textContent=ok?"✓ صحيح":"✗ الصحيح: "+q.choices[it[1]];
+      });
+      cf2.hidden=true;
+      finish(q,good,'<p>أصبت في <b class="num">'+ar(good)+'</b> من <span class="num">'+ar(q.items.length)+'</span>.</p>');
+    };
+  }
+}
+
+function correctText(q){
+  if(q.type==="mcq")return q.opts[0];
+  if(q.type==="tf")return q.ans?"صح":"خطأ";
+  if(q.type==="multi")return q.right.join(" — ");
+  return q.items.map(function(it){return it[0]+" ← "+q.choices[it[1]];}).join(" | ");
+}
+
+function showResult(){
+  var pct=total?Math.round(st.earned/total*100):0;
+  var g=pct>=90?"ممتاز":pct>=75?"جيد جدًا":pct>=60?"جيد":pct>=50?"مقبول":"يحتاج إلى مراجعة";
+  var secRows=SECTIONS.map(function(s,idx){
+    var items=st.log.filter(function(l){return l.q.sec===idx;});
+    var e=items.reduce(function(a,l){return a+l.earned;},0), p=items.reduce(function(a,l){return a+l.q.pts;},0);
+    return '<div><span><b>'+s.title+'</b> — '+s.sub+'</span><span class="num">'+ar(e)+' / '+ar(p)+'</span></div>';
+  }).join("");
+  var wrong=st.log.filter(function(l){return l.earned<l.q.pts-1e-9;});
+  var rev=wrong.length?
+    '<div class="review"><h2>مراجعة الأسئلة التي فقدت فيها درجات ('+ar(wrong.length)+')</h2>'+
+    wrong.map(function(l){return '<div class="ritem"><div class="rt">'+esc(l.q.text)+'</div><div class="ra">الإجابة الصحيحة: '+esc(correctText(l.q))+'</div><div class="re">'+esc(l.q.exp)+'</div></div>';}).join("")+'</div>'
+    :'<p class="pct">أجبت عن كل الأسئلة إجابة كاملة. أحسنت!</p>';
+  app.innerHTML=
+   '<section class="card result"><p class="pct">'+(st.name?esc(st.name)+" — ":"")+'نتيجتك النهائية</p>'+
+   '<div class="score-big num">'+ar(st.earned)+' <small>/ '+ar(total)+'</small></div>'+
+   '<div class="grade">'+g+'</div><div class="pct num">النسبة المئوية: '+ar(pct)+'٪</div>'+
+   '<div class="break">'+secRows+'</div>'+rev+
+   '<div class="next"><button class="btn ghost block" id="re">إعادة الامتحان</button></div></section>';
+  document.getElementById("re").onclick=function(){startScreen();window.scrollTo(0,0);};
+}
+
+startScreen();
+</script>
+
+</body>
+</html>
